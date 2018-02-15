@@ -3,14 +3,12 @@
 extern crate wait;
 extern crate atomic_counter;
 
-use std::sync::atomic::AtomicUsize;
 use std::time::Instant;
 use std::net::{SocketAddrV4, Ipv4Addr, TcpListener};
 use wait::sleeper::*;
 use std::time::Duration;
 use std::{thread, time};
 use atomic_counter::AtomicCounter;
-use atomic_counter::RelaxedCounter;
 
 #[test]
 fn should_wait_5_seconds_before() {
@@ -57,7 +55,7 @@ fn should_exit_on_timeout() {
     let start = Instant::now();
     let sleeper = MillisSleeper{};
 
-    let mut count : atomic_counter::RelaxedCounter = atomic_counter::RelaxedCounter::new(0);
+    let count : atomic_counter::RelaxedCounter = atomic_counter::RelaxedCounter::new(0);
     let mut fun = || { count.inc(); };
     assert_eq!(0, count.get());
     
@@ -76,18 +74,18 @@ fn should_identify_the_open_port() {
     let wait_before = 30;
     let wait_after = 30;
 
-    let tcpListener = new_tcp_listener();
-    let hosts = tcpListener.local_addr().unwrap().to_string();
+    let tcp_listener = new_tcp_listener();
+    let hosts = tcp_listener.local_addr().unwrap().to_string();
     let start = Instant::now();
     let sleeper = MillisSleeper{};
 
-    let mut count : atomic_counter::RelaxedCounter = atomic_counter::RelaxedCounter::new(0);
+    let count : atomic_counter::RelaxedCounter = atomic_counter::RelaxedCounter::new(0);
     let mut fun = || { count.inc(); };
     assert_eq!(0, count.get());
 
         thread::spawn(move || {
                 loop {
-                    match tcpListener.accept() {
+                    match tcp_listener.accept() {
                         Ok(_) => {  println!("Connection received!"); }
                         Err(_) => { println!("Error in received connection!"); }
                 }
@@ -109,19 +107,19 @@ fn should_wait_multiple_hosts() {
     let wait_before = 30;
     let wait_after = 30;
 
-    let tcpListener1 = new_tcp_listener();
-    let tcpListener2 = new_tcp_listener();
-    let hosts = tcpListener1.local_addr().unwrap().to_string() + "," + &tcpListener2.local_addr().unwrap().to_string();
+    let tcp_listener1 = new_tcp_listener();
+    let tcp_listener2 = new_tcp_listener();
+    let hosts = tcp_listener1.local_addr().unwrap().to_string() + "," + &tcp_listener2.local_addr().unwrap().to_string();
     let start = Instant::now();
     let sleeper = MillisSleeper{};
 
-    let mut count : atomic_counter::RelaxedCounter = atomic_counter::RelaxedCounter::new(0);
+    let count : atomic_counter::RelaxedCounter = atomic_counter::RelaxedCounter::new(0);
     let mut fun = || { count.inc(); };
     assert_eq!(0, count.get());
 
         thread::spawn(move || {
                 loop {
-                    match tcpListener1.accept() {
+                    match tcp_listener1.accept() {
                         Ok(_) => {  println!("Connection received!"); }
                         Err(_) => { println!("Error in received connection!"); }
                     }
@@ -130,7 +128,7 @@ fn should_wait_multiple_hosts() {
 
         thread::spawn(move || {
                 loop {
-                    match tcpListener2.accept() {
+                    match tcp_listener2.accept() {
                         Ok(_) => {  println!("Connection received!"); }
                         Err(_) => { println!("Error in received connection!"); }
                     }
@@ -152,18 +150,18 @@ fn should_fail_if_not_all_hosts_are_available() {
     let wait_before = 30;
     let wait_after = 30;
 
-    let tcpListener1 = new_tcp_listener();
-    let hosts = tcpListener1.local_addr().unwrap().to_string() + ",127.0.0.1:" + &free_port().to_string();
+    let tcp_listener1 = new_tcp_listener();
+    let hosts = tcp_listener1.local_addr().unwrap().to_string() + ",127.0.0.1:" + &free_port().to_string();
     let start = Instant::now();
     let sleeper = MillisSleeper{};
 
-    let mut count : atomic_counter::RelaxedCounter = atomic_counter::RelaxedCounter::new(0);
+    let count : atomic_counter::RelaxedCounter = atomic_counter::RelaxedCounter::new(0);
     let mut fun = || { count.inc(); };
     assert_eq!(0, count.get());
 
         thread::spawn(move || {
                 loop {
-                    match tcpListener1.accept() {
+                    match tcp_listener1.accept() {
                         Ok(_) => {  println!("Connection received!"); }
                         Err(_) => { println!("Error in received connection!"); }
                     }

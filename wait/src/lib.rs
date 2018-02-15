@@ -79,7 +79,7 @@ mod test {
     }
 
     #[test]
-    fn should_return_zero_when_Invalid_value() {
+    fn should_return_zero_when_invalid_value() {
         let value = to_int("hello".to_string(), 0);
         assert!(0 == value)
     }

@@ -23,7 +23,7 @@ mod test {
 
         for (key, value) in env::vars() {
             // println!("Variable found [{}]: [{}]", key, value);
-            if (!value.trim().is_empty()) {
+            if !value.trim().is_empty() {
                 env_key = key;
                 env_value = value;
             }
