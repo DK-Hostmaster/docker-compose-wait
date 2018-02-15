@@ -3,7 +3,7 @@ use std::env;
 pub fn env_var(key: &String, default: String) -> String {
     match env::var(key) {
         Ok(val) => val,
-        Err(e) => default,
+        Err(_e) => default,
     }
 }
 

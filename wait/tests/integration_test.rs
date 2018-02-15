@@ -18,7 +18,7 @@ fn should_wait_5_seconds_before() {
     let start = Instant::now();
     let sleeper = MillisSleeper{};
     wait::wait(&sleeper, &new_config("", 1, wait_for, 0), &mut on_timeout);
-    assert!( millisElapsed(start) >= wait_for )
+    assert!( millis_elapsed(start) >= wait_for )
 }
 
 
@@ -28,7 +28,7 @@ fn should_wait_10_seconds_after() {
     let start = Instant::now();
     let sleeper = MillisSleeper{};
     wait::wait(&sleeper, &new_config("", 1, 0, wait_for ), &mut on_timeout);
-    assert!( millisElapsed(start) >= wait_for )
+    assert!( millis_elapsed(start) >= wait_for )
 }
 
 #[test]
@@ -37,7 +37,7 @@ fn should_wait_before_and_after() {
     let start = Instant::now();
     let sleeper = MillisSleeper{};
     wait::wait(&sleeper, &new_config("", 1, wait_for, wait_for ), &mut on_timeout);
-    assert!( millisElapsed(start) >= (wait_for + wait_for) )
+    assert!( millis_elapsed(start) >= (wait_for + wait_for) )
 }
 
 #[test]
@@ -45,7 +45,7 @@ fn should_execute_without_wait() {
     let start = Instant::now();
     let sleeper = MillisSleeper{};
     wait::wait(&sleeper, &new_config("", 1, 0, 0 ), &mut on_timeout);
-    assert!( millisElapsed(start) <= 5 )
+    assert!( millis_elapsed(start) <= 5 )
 }
 
 #[test]
@@ -66,8 +66,8 @@ fn should_exit_on_timeout() {
     // assert that the on_timeout callback was called
     assert_eq!(1, count.get());
 
-    assert!( millisElapsed(start)  >= timeout + wait_before );
-    assert!( millisElapsed(start)  < timeout + wait_after);
+    assert!( millis_elapsed(start)  >= timeout + wait_before );
+    assert!( millis_elapsed(start)  < timeout + wait_after);
 }
 
 #[test]
@@ -76,7 +76,7 @@ fn should_identify_the_open_port() {
     let wait_before = 30;
     let wait_after = 30;
 
-    let tcpListener = newTcpListener();
+    let tcpListener = new_tcp_listener();
     let hosts = tcpListener.local_addr().unwrap().to_string();
     let start = Instant::now();
     let sleeper = MillisSleeper{};
@@ -99,8 +99,8 @@ fn should_identify_the_open_port() {
     
     assert_eq!(0, count.get());
 
-    assert!( millisElapsed(start)  >= wait_before + wait_after );
-    assert!( millisElapsed(start)  < timeout + wait_before + wait_after);
+    assert!( millis_elapsed(start)  >= wait_before + wait_after );
+    assert!( millis_elapsed(start)  < timeout + wait_before + wait_after);
 }
 
 #[test]
@@ -109,8 +109,8 @@ fn should_wait_multiple_hosts() {
     let wait_before = 30;
     let wait_after = 30;
 
-    let tcpListener1 = newTcpListener();
-    let tcpListener2 = newTcpListener();
+    let tcpListener1 = new_tcp_listener();
+    let tcpListener2 = new_tcp_listener();
     let hosts = tcpListener1.local_addr().unwrap().to_string() + "," + &tcpListener2.local_addr().unwrap().to_string();
     let start = Instant::now();
     let sleeper = MillisSleeper{};
@@ -142,8 +142,8 @@ fn should_wait_multiple_hosts() {
     
     assert_eq!(0, count.get());
 
-    assert!( millisElapsed(start)  >= wait_before + wait_after );
-    assert!( millisElapsed(start)  < timeout + wait_before + wait_after);
+    assert!( millis_elapsed(start)  >= wait_before + wait_after );
+    assert!( millis_elapsed(start)  < timeout + wait_before + wait_after);
 }
 
 #[test]
@@ -152,7 +152,7 @@ fn should_fail_if_not_all_hosts_are_available() {
     let wait_before = 30;
     let wait_after = 30;
 
-    let tcpListener1 = newTcpListener();
+    let tcpListener1 = new_tcp_listener();
     let hosts = tcpListener1.local_addr().unwrap().to_string() + ",127.0.0.1:" + &free_port().to_string();
     let start = Instant::now();
     let sleeper = MillisSleeper{};
@@ -175,8 +175,8 @@ fn should_fail_if_not_all_hosts_are_available() {
     
     assert_eq!(1, count.get());
 
-    assert!( millisElapsed(start)  >= wait_before + wait_after );
-    assert!( millisElapsed(start)  >= timeout + wait_before + wait_after);
+    assert!( millis_elapsed(start)  >= wait_before + wait_after );
+    assert!( millis_elapsed(start)  >= timeout + wait_before + wait_after);
 }
 
 fn on_timeout() {}
@@ -190,17 +190,17 @@ fn new_config(hosts: &str, timeout: u64, before: u64, after: u64) -> wait::Confi
     }
 }
 
-fn newTcpListener() -> TcpListener {
+fn new_tcp_listener() -> TcpListener {
     let loopback = Ipv4Addr::new(127, 0, 0, 1);
     let socket = SocketAddrV4::new(loopback, 0);
     TcpListener::bind(socket).unwrap()
 }
 
 fn free_port() -> u16 {
-    newTcpListener().local_addr().unwrap().port()
+    new_tcp_listener().local_addr().unwrap().port()
 }
 
-fn millisElapsed(start: Instant) -> u64 {
+fn millis_elapsed(start: Instant) -> u64 {
     let elapsed = start.elapsed().subsec_nanos() / 1000000;
     println!("Millis elapsed {}", elapsed);
     elapsed as u64
