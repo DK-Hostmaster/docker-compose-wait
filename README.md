@@ -1,3 +1,33 @@
+# :warning: IMPORTANT :warning:
+
+This is a fork of the **docker-compose-wait** repository.
+
+This fork satisfies two use-cases.
+
+1. We rely on the shell based implementation, tagged as 1.0.0 and we want to
+make sure that this is available.
+2. We regard the dynamic inclusion and execution of an external component a
+security risk and therefor we want to use our own copy
+
+This mean that you can use the component as specified in the original
+documentation (see below), you do however have to point to our own fork.
+
+```
+ADD https://raw.githubusercontent.com/ufoscout/docker-compose-wait/1.0.0/wait.sh /wait.sh
+```
+
+Should be written as:
+
+```
+ADD https://raw.githubusercontent.com/DK-Hostmaster/docker-compose-wait/1.0.0/wait.sh /wait.sh
+```
+
+If you have any questions or comments to this practice please contact: jonasbn
+
+Thank you,
+
+_The documentation below is from the parent repository of this fork_
+
 # docker-compose-wait
 A small command line utility to wait for other docker images to be started while using docker-compose.
 It permits to wait for a fixed amount of seconds and/or to wait until a TCP port is open on a target image.
@@ -35,7 +65,7 @@ services:
     hostname: mongo
     ports:
       - "27017:27017"
-  
+
   postgres:
     image: "postgres:9.4"
     hostname: postgres
@@ -47,7 +77,7 @@ services:
     hostname: mysql
     ports:
       - "3306:3306"
-      
+
   mySuperApp:
     image: "mySuperApp:latest"
     hostname: mySuperApp
