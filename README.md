@@ -2,10 +2,10 @@
 
 This is a fork of the **docker-compose-wait** repository.
 
-This fork satisfies two use-cases.
+This fork satisfies two issues:
 
 1. We rely on the shell based implementation, tagged as 1.0.0 and we want to
-make sure that this is available.
+make sure that this is available
 2. We regard the dynamic inclusion and execution of an external component a
 security risk and therefor we want to use our own copy
 
@@ -24,7 +24,7 @@ ADD https://raw.githubusercontent.com/DK-Hostmaster/docker-compose-wait/1.0.0/wa
 
 If you have any questions or comments to this practice please contact: jonasbn
 
-Thank you,
+Thank you
 
 _The documentation below is from the parent repository of this fork_
 
