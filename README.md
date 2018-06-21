@@ -9,13 +9,13 @@ This fork satisfies two issues:
 
 This mean that you can use the component as specified in the original documentation (see below), you do however have to point to our own fork.
 
-```
+```dockerfile
 ADD https://raw.githubusercontent.com/ufoscout/docker-compose-wait/1.0.0/wait.sh /wait.sh
 ```
 
 Should be written as:
 
-```
+```dockerfile
 ADD https://raw.githubusercontent.com/DK-Hostmaster/docker-compose-wait/1.0.0/wait.sh /wait.sh
 ```
 
@@ -36,7 +36,7 @@ This utility should be used in docker build process and launched before your app
 
 For example, your application "MySuperApp" uses MongoDB, Postgres and MySql (wow!) and you want to be sure that when it starts all other systems are available, then simply customize your dockerfile this way:
 
-```
+```dockerfile
 FROM alpine
 
 ## Add your application to the docker image
@@ -54,7 +54,7 @@ Done! the image is ready.
 
 Now let's modify the docker-compose.yml file:
 
-```
+```yaml
 version: "3"
 
 services:
