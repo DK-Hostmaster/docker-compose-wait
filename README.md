@@ -19,7 +19,7 @@ Should be written as:
 ADD https://raw.githubusercontent.com/DK-Hostmaster/docker-compose-wait/1.0.0/wait.sh /wait.sh
 ```
 
-If you have any questions or comments to this practice please contact: @jonasbn
+If you have any questions or comments to this practice please create an issue.
 
 Thank you
 
